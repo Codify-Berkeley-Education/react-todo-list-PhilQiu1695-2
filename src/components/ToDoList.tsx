@@ -1,39 +1,33 @@
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { Task } from "../types/taskTypes";
 import { stringWidth } from "bun";
 import { TodoItem } from "./TodoItem";
+import { TodoProvider, useTodo } from "../providers/TodoContext";
+
 
 export const TodoList = () => {
+  const { tasks, addTask, HandleDeleteTask, HandleToggleCompleteTask} = useTodo();
   const [taskName, setTaskName] = useState<string>("");
   const [deadline, setDeadline] = useState<number | undefined>(undefined);
-  const [todoList, setTodoList] = useState<Task[]>([]);
 
-  const addTask = () => {
-    if (taskName === "") return;
 
-    const newTask: Task = {
-      id: uuidv4(),
-      taskName: taskName,
-      deadline: deadline,
-      completed: false,
-    };
-
-    setTodoList([...todoList, newTask]);
-    setTaskName("");
-    setDeadline(undefined);
+const handleAdd = () => {
+  if (taskName.trim() === "") return;
+  
+  const taskData = {
+    taskName: taskName,
+    deadline: deadline
   };
 
-  const handleDeleteTask = (taskNameToDelete : string) => {
-    setTodoList(todoList.filter((task) => task.id !== taskNameToDelete));
-  }
+  addTask(taskData);
+  setTaskName("");
+  setDeadline(undefined);
+};
 
-  const handleToggleCompleteTask = (taskNameToComplete : string) => {
-    setTodoList(todoList.map((task) => 
-        task.id === taskNameToComplete ? { ...task, completed: !task.completed } : task ));
-}
+  
 
-  return (
+
+    return (
     <div>
       <input
         type="text" 
@@ -51,15 +45,15 @@ export const TodoList = () => {
         }} 
         placeholder="Deadline..." 
         />
-      <button onClick={addTask}>Add Task</button>
+      <button onClick={handleAdd}>Add Task</button>
 
     <div className="todo-list">
-      {todoList.map((task: Task) => (
+      {tasks.map((task: Task) => (
     <TodoItem 
       key={task.id} 
       task={task} 
-      handleDeleteTask={handleDeleteTask} 
-      handleToggleCompleteTask={handleToggleCompleteTask} 
+      HandleDeleteTask={HandleDeleteTask} 
+      HandleToggleCompleteTask={HandleToggleCompleteTask} 
     />
     ))}
     </div>

@@ -2,17 +2,17 @@ import { Task } from "../types/taskTypes";
 
 type TodoItemProps = {
   task: Task;
-  handleToggleCompleteTask: (taskNameToComplete: string) => void;
-  handleDeleteTask: (taskNameToDelete: string) => void;
+  HandleToggleCompleteTask: (taskNameToComplete: string) => void;
+  HandleDeleteTask: (taskNameToDelete: string) => void;
 };
 
-export const TodoItem = ({ task, handleToggleCompleteTask, handleDeleteTask }: TodoItemProps) => {
+export const TodoItem = ({ task, HandleToggleCompleteTask, HandleDeleteTask }: TodoItemProps) => {
   return (
     <div className="todo-item">
 =      <input 
         type="checkbox" 
         checked={task.completed} 
-        onChange={() => handleToggleCompleteTask(task.id)} 
+        onChange={() => HandleToggleCompleteTask(task.id)} 
       />
 
       <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
@@ -23,7 +23,7 @@ export const TodoItem = ({ task, handleToggleCompleteTask, handleDeleteTask }: T
         <span> (Due in: {task.deadline} days)</span>
       )}
 
-      <button onClick={() => handleDeleteTask(task.id)}>Delete</button>
+      <button onClick={() => HandleDeleteTask(task.id)}>Delete</button>
     </div>
   );
 };
